@@ -5,7 +5,7 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.pipeline import make_pipeline
 from sklearn.model_selection import train_test_split
 from sklearn import metrics
-
+from matplotlib import pyplot as plt
 # Loading the dataset
 crops = pd.read_csv("Data_Set.csv")
 
@@ -21,6 +21,8 @@ features = ["N", "P", "K", "ph"]
 
 best_score = 0
 best_feature = None
+
+scores = {}
 
 for feature in features:
     X = crops.drop(feature, axis=1)
@@ -48,8 +50,16 @@ for feature in features:
     
     print(f"{feature} {score:.10f}")
 
+    scores[feature] = score
+
 print(f"Best predictive feature: {best_feature} with a score of {best_score:.10f}")
 
 best_predictive_feature = {
     best_feature: best_score
 }
+
+plt.title("Feature Importance")
+plt.bar(list(scores.keys()), list(scores.values()))
+plt.xlabel("Features")
+plt.ylabel("Balanced Accuracy Score")
+plt.show()
